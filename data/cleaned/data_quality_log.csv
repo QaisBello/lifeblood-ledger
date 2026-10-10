@@ -1,0 +1,17 @@
+drive,issue,rows_affected,action
+ALL,Raw rows loaded,281,281 responses across 3 Google Form exports with different column names/orders; harmonized into one schema
+VAL25,Responses submitted to the Valentine 2025 form on 27 Jun 2025 (World Blood Donor Day),7,Re-assigned to WBDD25
+VAL25,Late submission (2 days after drive),1,Kept in VAL25
+ALL,Same person submitted twice in the same drive,8,"Kept latest submission, dropped earlier one"
+ALL,"Implausible age (99, 100)",2,Set to blank
+ALL,"Age typed with text (""19 years"", ""19yrs"", ""20yrs"")",3,Extracted number
+VAL25,Gender blank (question added to form mid-drive),69,"Labelled ""Not captured"""
+ALL,Rare occupations (e.g. one photographer) could identify a person,5,"Generalised to ""Non-student"""
+ALL,"Institution typed 42 different ways (e.g. ""Lasucom"", ""LASUCOM "", ""Lagos state univ. college of medicine"")",42,"Mapped to 5 groups: LASUCOM, LASU (Main), Other University, Workplace / Other, Unknown"
+WBDD25,"Said ""first-time donor = Yes"" but also ""donated 1 time before""",2,"Treated as first-time (prior = 0); the ""1"" most likely counts today"
+VAL25,"Said ""first-time donor = No"" but history = ""First time""",1,Kept as first-time (history answer is more specific)
+WBDD25,"History answer ""Did not donate"" (not a valid history option)",21,Treated as no prior donations
+ALL,Deferral reason blank/vague but donor is under 18,2,"Reason inferred as ""Underage"""
+ALL,"Answered ""No, could not donate"" but wrote ""I donated""",1,"Kept the Yes/No answer; reason = ""Not specified"""
+ALL,Deferral reason written 73 free-text ways,73,Classified into 7 reasons
+VAL26,"Respondent admits picking blood group ""O"" only because the field was required",1,"Left as reported; flag for form redesign (""I don't know"" option exists but was missed)"

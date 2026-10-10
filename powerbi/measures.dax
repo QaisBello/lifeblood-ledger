@@ -1,0 +1,58 @@
+// ===== Lifeblood Ledger · DAX measures =====
+// Create a blank table named _Measures (Home > Enter data > OK) and add each measure to it.
+
+Check-ins = COUNTROWS ( fact_responses )
+
+Units Collected = CALCULATE ( [Check-ins], fact_responses[donated] = TRUE () )
+
+Deferrals = [Check-ins] - [Units Collected]
+
+Donation Rate = DIVIDE ( [Units Collected], [Check-ins] )
+
+Deferral Rate = DIVIDE ( [Deferrals], [Check-ins] )
+
+First-timer Share = DIVIDE ( CALCULATE ( [Check-ins], fact_responses[first_time] = TRUE () ), [Check-ins] )
+
+Unique Donors = DISTINCTCOUNT ( fact_responses[donor_id] )
+
+// --- Return gap: only check-ins from drives that have a later drive can be measured
+Measurable Check-ins = CALCULATE ( [Check-ins], fact_responses[has_later_drive] = TRUE () )
+
+Promised Return % =
+DIVIDE (
+    CALCULATE ( [Check-ins], fact_responses[has_later_drive] = TRUE (), fact_responses[will_return] = TRUE () ),
+    [Measurable Check-ins]
+)
+
+Actual Return % =
+DIVIDE (
+    CALCULATE ( [Check-ins], fact_responses[has_later_drive] = TRUE (), fact_responses[came_back_later] = TRUE () ),
+    [Measurable Check-ins]
+)
+
+Return Gap (pts) = ( [Promised Return %] - [Actual Return %] ) * 100
+
+Reminder Opt-in % = DIVIDE ( CALCULATE ( [Check-ins], fact_responses[wants_reminder] = TRUE () ), [Check-ins] )
+
+Unknown Blood Group % = DIVIDE ( CALCULATE ( [Check-ins], fact_responses[blood_group] = "Unknown" ), [Check-ins] )
+
+Low PCV/Hb Share of Deferrals =
+DIVIDE (
+    CALCULATE ( [Check-ins], fact_responses[deferral_reason] = "Low PCV / Haemoglobin" ),
+    [Deferrals]
+)
+
+// Deferral rate for women vs men, ignoring any gender slicer, for the headline card
+Female Deferral Rate = CALCULATE ( [Deferral Rate], REMOVEFILTERS ( fact_responses[gender] ), fact_responses[gender] = "Female" )
+Male Deferral Rate   = CALCULATE ( [Deferral Rate], REMOVEFILTERS ( fact_responses[gender] ), fact_responses[gender] = "Male" )
+
+// Dynamic headline for the journey page
+Journey Headline =
+IF (
+    ISBLANK ( [Measurable Check-ins] ),
+    "Return can't be measured for the latest drive yet",
+    FORMAT ( [Promised Return %], "0%" ) & " promised to come back. " & FORMAT ( [Actual Return %], "0%" ) & " did."
+)
+
+// Colour rule for bars: red when deferral rate >= 40%
+Deferral Bar Colour = IF ( [Deferral Rate] >= 0.4, "#D0304A", "#6B5A60" )

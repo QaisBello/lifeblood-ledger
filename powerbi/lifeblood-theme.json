@@ -1,0 +1,29 @@
+{
+  "name": "Lifeblood Ledger",
+  "dataColors": ["#D0304A", "#BE8520", "#4F8FDB", "#6B5A60", "#3FAE7A", "#A8979D", "#4D4045", "#F3ECEE"],
+  "background": "#110B0E",
+  "foreground": "#F3ECEE",
+  "tableAccent": "#D0304A",
+  "good": "#3FAE7A",
+  "neutral": "#BE8520",
+  "bad": "#D0304A",
+  "maximum": "#D0304A",
+  "center": "#6B5A60",
+  "minimum": "#22181D",
+  "textClasses": {
+    "title":   { "fontFace": "Segoe UI Semibold", "fontSize": 14, "color": "#F3ECEE" },
+    "header":  { "fontFace": "Segoe UI Semibold", "fontSize": 12, "color": "#F3ECEE" },
+    "label":   { "fontFace": "Segoe UI", "fontSize": 10, "color": "#A8979D" },
+    "callout": { "fontFace": "DIN", "fontSize": 36, "color": "#F3ECEE" }
+  },
+  "visualStyles": {
+    "*": { "*": {
+      "background": [{ "show": true, "color": { "solid": { "color": "#1A1216" } }, "transparency": 0 }],
+      "border": [{ "show": true, "color": { "solid": { "color": "#33262C" } }, "radius": 10 }],
+      "outspacePane": [{ "backgroundColor": { "solid": { "color": "#1A1216" } } }],
+      "categoryAxis": [{ "gridlineShow": false, "labelColor": { "solid": { "color": "#76656B" } } }],
+      "valueAxis": [{ "gridlineColor": { "solid": { "color": "#2A1D23" } }, "gridlineStyle": "dotted", "labelColor": { "solid": { "color": "#76656B" } } }]
+    } },
+    "page": { "*": { "background": [{ "color": { "solid": { "color": "#110B0E" } }, "transparency": 0 }] } }
+  }
+}
