@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "ae8d0831ff8656f78c99",
+  "position": {
+    "x": 440,
+    "y": 272,
+    "z": 13,
+    "width": 816,
+    "height": 436,
+    "tabOrder": 13
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "experience_text"
+                }
+              },
+              "queryRef": "Responses.experience_text",
+              "nativeQueryRef": "experience_text",
+              "displayName": "In their words"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "experience_sentiment"
+                }
+              },
+              "queryRef": "Responses.experience_sentiment",
+              "nativeQueryRef": "experience_sentiment",
+              "displayName": "Sentiment"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Comments"
+                }
+              },
+              "queryRef": "Responses.Comments",
+              "nativeQueryRef": "Comments",
+              "displayName": "n"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'What donors said'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

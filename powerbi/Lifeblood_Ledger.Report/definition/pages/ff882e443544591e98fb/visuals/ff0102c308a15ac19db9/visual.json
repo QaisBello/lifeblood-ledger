@@ -1,0 +1,160 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "ff0102c308a15ac19db9",
+  "position": {
+    "x": 24,
+    "y": 60,
+    "z": 10,
+    "width": 600,
+    "height": 200,
+    "tabOrder": 10
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Drives"
+                    }
+                  },
+                  "Property": "drive_name"
+                }
+              },
+              "queryRef": "Drives.drive_name",
+              "nativeQueryRef": "drive_name",
+              "displayName": "Drive"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Check-ins"
+                }
+              },
+              "queryRef": "Responses.Check-ins",
+              "nativeQueryRef": "Check-ins"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Units Collected"
+                }
+              },
+              "queryRef": "Responses.Units Collected",
+              "nativeQueryRef": "Units Collected",
+              "displayName": "Units"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Measurable Check-ins"
+                }
+              },
+              "queryRef": "Responses.Measurable Check-ins",
+              "nativeQueryRef": "Measurable Check-ins",
+              "displayName": "Measurable"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Promised Return %"
+                }
+              },
+              "queryRef": "Responses.Promised Return %",
+              "nativeQueryRef": "Promised Return %",
+              "displayName": "Promised"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Responses"
+                    }
+                  },
+                  "Property": "Actual Return %"
+                }
+              },
+              "queryRef": "Responses.Actual Return %",
+              "nativeQueryRef": "Actual Return %",
+              "displayName": "Came back"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Drives"
+                  }
+                },
+                "Property": "drive_name"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'By drive (the latest drive has no later drive yet, so return is blank)'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,697 @@
+{
+  "tables": [
+    {
+      "name": "Responses",
+      "description": "One row per donor check-in (273) across three drives, anonymised. Self-reported form data.",
+      "columns": [
+        {
+          "name": "response_id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "donor_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_name",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "drive_date",
+          "type": "dateTime",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "submitted_at",
+          "type": "dateTime",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "submit_hour",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "age",
+          "type": "double",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "age_band",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "underage",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "gender",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "occupation",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "institution_group",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "blood_group",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "abo",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "rh",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "genotype",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "prior_donations",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "prior_bucket",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "first_time",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "is_returning_to_ohls",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "has_later_drive",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "came_back_later",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "donated",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "deferral_reason",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "deferral_reason_text",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "will_return",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "wants_reminder",
+          "type": "boolean",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "experience_text",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "experience_sentiment",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "Age Order",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "History Order",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Drives",
+      "description": "The three drives: Valentine's Day 2025, World Blood Donor Day 2025, Valentine's Day 2026.",
+      "columns": [
+        {
+          "name": "drive_id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "drive_name",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "drive_date",
+          "type": "dateTime",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "drive_seq",
+          "type": "int64",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "campaign",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Donors",
+      "description": "One row per anonymised donor (260), with the drives they attended.",
+      "columns": [
+        {
+          "name": "donor_id",
+          "type": "string",
+          "hidden": true,
+          "key": true
+        },
+        {
+          "name": "drives_attended",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "first_drive",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "last_drive",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        },
+        {
+          "name": "times_donated_with_ohls",
+          "type": "int64",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    },
+    {
+      "name": "Journey",
+      "description": "The return journey for check-ins at drives with a later drive (the 2025 drives): checked in, promised to come back, came back. One row per check-in per stage reached; built in Power Query for the funnel.",
+      "columns": [
+        {
+          "name": "response_id",
+          "type": "string",
+          "hidden": true,
+          "key": false
+        },
+        {
+          "name": "Stage",
+          "type": "string",
+          "hidden": false,
+          "key": false
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "fromTable": "Responses",
+      "fromColumn": "drive_id",
+      "toTable": "Drives",
+      "toColumn": "drive_id",
+      "both": false
+    },
+    {
+      "fromTable": "Responses",
+      "fromColumn": "donor_id",
+      "toTable": "Donors",
+      "toColumn": "donor_id",
+      "both": false
+    },
+    {
+      "fromTable": "Journey",
+      "fromColumn": "response_id",
+      "toTable": "Responses",
+      "toColumn": "response_id",
+      "both": true
+    }
+  ],
+  "measures": [
+    {
+      "name": "Check-ins",
+      "table": "Responses",
+      "folder": "Drive",
+      "format": "#,0",
+      "dax": "COUNTROWS ( Responses )",
+      "description": "Donor check-ins (form responses after de-duplication)."
+    },
+    {
+      "name": "Units Collected",
+      "table": "Responses",
+      "folder": "Drive",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Check-ins], Responses[donated] == TRUE () )",
+      "description": "Units of whole blood collected."
+    },
+    {
+      "name": "Deferrals",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Check-ins], Responses[donated] == FALSE () )",
+      "description": "Check-ins turned away at screening (blank for the Donated reason, so bar charts leave it out)."
+    },
+    {
+      "name": "Donation Rate",
+      "table": "Responses",
+      "folder": "Drive",
+      "format": "0%",
+      "dax": "DIVIDE ( [Units Collected], [Check-ins] )",
+      "description": "Share of check-ins who donated."
+    },
+    {
+      "name": "Deferral Rate",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "0%",
+      "dax": "DIVIDE ( [Deferrals], [Check-ins] )",
+      "description": "Share of check-ins deferred."
+    },
+    {
+      "name": "First-timer Share",
+      "table": "Responses",
+      "folder": "Drive",
+      "format": "0%",
+      "dax": "DIVIDE ( CALCULATE ( [Check-ins], Responses[first_time] == TRUE () ), [Check-ins] )",
+      "description": "Share who had never donated before."
+    },
+    {
+      "name": "Unique Donors",
+      "table": "Responses",
+      "folder": "Drive",
+      "format": "#,0",
+      "dax": "DISTINCTCOUNT ( Responses[donor_id] )",
+      "description": "Distinct donors."
+    },
+    {
+      "name": "Measurable Check-ins",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE () )",
+      "description": "Check-ins at drives that have a later drive, so return can be measured."
+    },
+    {
+      "name": "Promised Return %",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "0%",
+      "dax": "DIVIDE (\n    CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE (), Responses[will_return] == TRUE () ),\n    [Measurable Check-ins]\n)",
+      "description": "Said they would come back."
+    },
+    {
+      "name": "Actual Return %",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "0%",
+      "dax": "DIVIDE (\n    CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE (), Responses[came_back_later] == TRUE () ),\n    [Measurable Check-ins]\n)",
+      "description": "Were seen at a later drive."
+    },
+    {
+      "name": "Return Gap",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "0\" points\"",
+      "dax": "( [Promised Return %] - [Actual Return %] ) * 100",
+      "description": "Promise minus reality, in percentage points."
+    },
+    {
+      "name": "Reminder Opt-in %",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "0%",
+      "dax": "DIVIDE ( CALCULATE ( [Check-ins], Responses[wants_reminder] == TRUE () ), [Check-ins] )",
+      "description": "Asked to be reminded about the next drive."
+    },
+    {
+      "name": "Unknown Blood Group %",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "0%",
+      "dax": "DIVIDE ( CALCULATE ( [Check-ins], Responses[blood_group] = \"Unknown\" ), [Check-ins] )",
+      "description": "Did not know their blood group."
+    },
+    {
+      "name": "Low PCV/Hb Share of Deferrals",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "0%",
+      "dax": "DIVIDE ( CALCULATE ( [Check-ins], Responses[deferral_reason] = \"Low PCV / Haemoglobin\" ), [Deferrals] )",
+      "description": "Deferrals caused by low packed cell volume or haemoglobin."
+    },
+    {
+      "name": "Female Deferral Rate",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "0%",
+      "dax": "CALCULATE ( [Deferral Rate], REMOVEFILTERS ( Responses[gender] ), Responses[gender] = \"Female\" )",
+      "description": "Ignores any gender slicer."
+    },
+    {
+      "name": "Male Deferral Rate",
+      "table": "Responses",
+      "folder": "Screening",
+      "format": "0%",
+      "dax": "CALCULATE ( [Deferral Rate], REMOVEFILTERS ( Responses[gender] ), Responses[gender] = \"Male\" )",
+      "description": "Ignores any gender slicer."
+    },
+    {
+      "name": "Journey Headline",
+      "table": "Responses",
+      "folder": "Return",
+      "format": "General",
+      "dax": "IF (\n    ISBLANK ( [Measurable Check-ins] ),\n    \"Return can't be measured for the latest drive yet\",\n    FORMAT ( [Promised Return %], \"0%\" ) & \" promised to come back. \" & FORMAT ( [Actual Return %], \"0%\" ) & \" did.\"\n)",
+      "description": "Dynamic headline for the journey."
+    },
+    {
+      "name": "Comments",
+      "table": "Responses",
+      "folder": "Voice",
+      "format": "#,0",
+      "dax": "CALCULATE ( [Check-ins], NOT ISBLANK ( Responses[experience_text] ) )",
+      "description": "Check-ins that left a written comment (blank otherwise, so the quote table lists only comments)."
+    },
+    {
+      "name": "Journey Check-ins",
+      "table": "Journey",
+      "folder": "Return",
+      "format": "#,0",
+      "dax": "DISTINCTCOUNT ( Journey[response_id] )",
+      "description": "Check-ins reaching each journey stage."
+    }
+  ],
+  "pages": [
+    {
+      "page": "Overview",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 8,
+          "width": 560,
+          "height": 44
+        },
+        {
+          "type": "slicer",
+          "x": 600,
+          "y": 4,
+          "width": 160,
+          "height": 60
+        },
+        {
+          "type": "slicer",
+          "x": 772,
+          "y": 4,
+          "width": 160,
+          "height": 60
+        },
+        {
+          "type": "slicer",
+          "x": 944,
+          "y": 4,
+          "width": 156,
+          "height": 60
+        },
+        {
+          "type": "slicer",
+          "x": 1112,
+          "y": 4,
+          "width": 144,
+          "height": 60
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 272,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 520,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 768,
+          "y": 76,
+          "width": 236,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 1016,
+          "y": 76,
+          "width": 240,
+          "height": 96
+        },
+        {
+          "type": "funnel",
+          "x": 24,
+          "y": 184,
+          "width": 760,
+          "height": 524
+        },
+        {
+          "type": "card",
+          "x": 800,
+          "y": 184,
+          "width": 456,
+          "height": 160
+        },
+        {
+          "type": "card",
+          "x": 800,
+          "y": 356,
+          "width": 456,
+          "height": 112
+        },
+        {
+          "type": "card",
+          "x": 800,
+          "y": 480,
+          "width": 456,
+          "height": 112
+        },
+        {
+          "type": "card",
+          "x": 800,
+          "y": 604,
+          "width": 456,
+          "height": 104
+        }
+      ]
+    },
+    {
+      "page": "Screening",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 8,
+          "width": 1232,
+          "height": 44
+        },
+        {
+          "type": "card",
+          "x": 24,
+          "y": 60,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 336,
+          "y": 60,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 648,
+          "y": 60,
+          "width": 300,
+          "height": 96
+        },
+        {
+          "type": "card",
+          "x": 960,
+          "y": 60,
+          "width": 296,
+          "height": 96
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 24,
+          "y": 168,
+          "width": 500,
+          "height": 260
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 540,
+          "y": 168,
+          "width": 340,
+          "height": 260
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 896,
+          "y": 168,
+          "width": 360,
+          "height": 260
+        },
+        {
+          "type": "clusteredColumnChart",
+          "x": 24,
+          "y": 440,
+          "width": 600,
+          "height": 268
+        },
+        {
+          "type": "lineChart",
+          "x": 640,
+          "y": 440,
+          "width": 616,
+          "height": 268
+        }
+      ]
+    },
+    {
+      "page": "Return and voice",
+      "visuals": [
+        {
+          "type": "textbox",
+          "x": 24,
+          "y": 8,
+          "width": 1232,
+          "height": 44
+        },
+        {
+          "type": "tableEx",
+          "x": 24,
+          "y": 60,
+          "width": 600,
+          "height": 200
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 640,
+          "y": 60,
+          "width": 616,
+          "height": 200
+        },
+        {
+          "type": "clusteredBarChart",
+          "x": 24,
+          "y": 272,
+          "width": 400,
+          "height": 436
+        },
+        {
+          "type": "tableEx",
+          "x": 440,
+          "y": 272,
+          "width": 816,
+          "height": 436
+        }
+      ]
+    }
+  ],
+  "base_url": "https://raw.githubusercontent.com/QaisBello/One-health-life-savers-blood-ledger/main/data/cleaned/"
+}

@@ -1,0 +1,12 @@
+relationship 4d38a50e-6d80-5ef7-9a16-138ae6df8186
+	fromColumn: Responses.drive_id
+	toColumn: Drives.drive_id
+
+relationship affa0c06-ad4e-502d-bcf1-27363ae1f304
+	fromColumn: Responses.donor_id
+	toColumn: Donors.donor_id
+
+relationship 379ad924-6dd2-5499-9bb1-d9d622f078bf
+	crossFilteringBehavior: bothDirections
+	fromColumn: Journey.response_id
+	toColumn: Responses.response_id

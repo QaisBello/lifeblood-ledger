@@ -1,0 +1,36 @@
+/// The return journey for check-ins at drives with a later drive (the 2025 drives): checked in, promised to come back, came back. One row per check-in per stage reached; built in Power Query for the funnel.
+table Journey
+
+	/// Check-ins reaching each journey stage.
+	measure 'Journey Check-ins' = DISTINCTCOUNT ( Journey[response_id] )
+		formatString: #,0
+		displayFolder: Return
+
+	column response_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: response_id
+
+	column Stage
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Stage
+
+	partition Journey = m
+		mode: import
+		source = ```
+				let
+				    Source = Csv.Document(Web.Contents(BaseUrl, [RelativePath = "fact_responses.csv"]), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Base = Table.SelectRows(Table.SelectColumns(Promoted, {"response_id", "has_later_drive", "will_return", "came_back_later"}),
+				        each Text.Lower([has_later_drive]) = "true"),
+				    Stage1 = Table.AddColumn(Base, "Stage", each "1. Checked in (2025 drives)"),
+				    Stage2 = Table.AddColumn(Table.SelectRows(Base, each Text.Lower([will_return]) = "true"), "Stage", each "2. Promised to come back"),
+				    Stage3 = Table.AddColumn(Table.SelectRows(Base, each Text.Lower([came_back_later]) = "true"), "Stage", each "3. Came back"),
+				    Combined = Table.SelectColumns(Table.Combine({Stage1, Stage2, Stage3}), {"response_id", "Stage"}),
+				    Result = Table.TransformColumnTypes(Combined, {{"response_id", type text}, {"Stage", type text}})
+				in
+				    Result
+				```
+

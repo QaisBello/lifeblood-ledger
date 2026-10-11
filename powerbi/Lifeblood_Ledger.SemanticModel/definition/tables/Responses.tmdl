@@ -1,0 +1,345 @@
+/// One row per donor check-in (273) across three drives, anonymised. Self-reported form data.
+table Responses
+
+	/// Donor check-ins (form responses after de-duplication).
+	measure 'Check-ins' = COUNTROWS ( Responses )
+		formatString: #,0
+		displayFolder: Drive
+
+	/// Units of whole blood collected.
+	measure 'Units Collected' = CALCULATE ( [Check-ins], Responses[donated] == TRUE () )
+		formatString: #,0
+		displayFolder: Drive
+
+	/// Check-ins turned away at screening (blank for the Donated reason, so bar charts leave it out).
+	measure Deferrals = CALCULATE ( [Check-ins], Responses[donated] == FALSE () )
+		formatString: #,0
+		displayFolder: Screening
+
+	/// Share of check-ins who donated.
+	measure 'Donation Rate' = DIVIDE ( [Units Collected], [Check-ins] )
+		formatString: 0%
+		displayFolder: Drive
+
+	/// Share of check-ins deferred.
+	measure 'Deferral Rate' = DIVIDE ( [Deferrals], [Check-ins] )
+		formatString: 0%
+		displayFolder: Screening
+
+	/// Share who had never donated before.
+	measure 'First-timer Share' = DIVIDE ( CALCULATE ( [Check-ins], Responses[first_time] == TRUE () ), [Check-ins] )
+		formatString: 0%
+		displayFolder: Drive
+
+	/// Distinct donors.
+	measure 'Unique Donors' = DISTINCTCOUNT ( Responses[donor_id] )
+		formatString: #,0
+		displayFolder: Drive
+
+	/// Check-ins at drives that have a later drive, so return can be measured.
+	measure 'Measurable Check-ins' = CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE () )
+		formatString: #,0
+		displayFolder: Return
+
+	/// Said they would come back.
+	measure 'Promised Return %' =
+			DIVIDE (
+			    CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE (), Responses[will_return] == TRUE () ),
+			    [Measurable Check-ins]
+			)
+		formatString: 0%
+		displayFolder: Return
+
+	/// Were seen at a later drive.
+	measure 'Actual Return %' =
+			DIVIDE (
+			    CALCULATE ( [Check-ins], Responses[has_later_drive] == TRUE (), Responses[came_back_later] == TRUE () ),
+			    [Measurable Check-ins]
+			)
+		formatString: 0%
+		displayFolder: Return
+
+	/// Promise minus reality, in percentage points.
+	measure 'Return Gap' = ( [Promised Return %] - [Actual Return %] ) * 100
+		formatString: 0" points"
+		displayFolder: Return
+
+	/// Asked to be reminded about the next drive.
+	measure 'Reminder Opt-in %' = DIVIDE ( CALCULATE ( [Check-ins], Responses[wants_reminder] == TRUE () ), [Check-ins] )
+		formatString: 0%
+		displayFolder: Return
+
+	/// Did not know their blood group.
+	measure 'Unknown Blood Group %' = DIVIDE ( CALCULATE ( [Check-ins], Responses[blood_group] = "Unknown" ), [Check-ins] )
+		formatString: 0%
+		displayFolder: Screening
+
+	/// Deferrals caused by low packed cell volume or haemoglobin.
+	measure 'Low PCV/Hb Share of Deferrals' = DIVIDE ( CALCULATE ( [Check-ins], Responses[deferral_reason] = "Low PCV / Haemoglobin" ), [Deferrals] )
+		formatString: 0%
+		displayFolder: Screening
+
+	/// Ignores any gender slicer.
+	measure 'Female Deferral Rate' = CALCULATE ( [Deferral Rate], REMOVEFILTERS ( Responses[gender] ), Responses[gender] = "Female" )
+		formatString: 0%
+		displayFolder: Screening
+
+	/// Ignores any gender slicer.
+	measure 'Male Deferral Rate' = CALCULATE ( [Deferral Rate], REMOVEFILTERS ( Responses[gender] ), Responses[gender] = "Male" )
+		formatString: 0%
+		displayFolder: Screening
+
+	/// Dynamic headline for the journey.
+	measure 'Journey Headline' =
+			IF (
+			    ISBLANK ( [Measurable Check-ins] ),
+			    "Return can't be measured for the latest drive yet",
+			    FORMAT ( [Promised Return %], "0%" ) & " promised to come back. " & FORMAT ( [Actual Return %], "0%" ) & " did."
+			)
+		formatString: General
+		displayFolder: Return
+
+	/// Check-ins that left a written comment (blank otherwise, so the quote table lists only comments).
+	measure Comments = CALCULATE ( [Check-ins], NOT ISBLANK ( Responses[experience_text] ) )
+		formatString: #,0
+		displayFolder: Voice
+
+	column response_id
+		dataType: string
+		isHidden
+		isKey
+		summarizeBy: none
+		sourceColumn: response_id
+
+	column donor_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: donor_id
+
+	column drive_id
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_id
+
+	column drive_name
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_name
+
+	column drive_date
+		dataType: dateTime
+		isHidden
+		summarizeBy: none
+		sourceColumn: drive_date
+
+	column submitted_at
+		dataType: dateTime
+		isHidden
+		summarizeBy: none
+		sourceColumn: submitted_at
+
+	column submit_hour
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: submit_hour
+
+	column age
+		dataType: double
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: age
+
+	column age_band
+		dataType: string
+		summarizeBy: none
+		sourceColumn: age_band
+		sortByColumn: 'Age Order'
+
+	column underage
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: underage
+
+	column gender
+		dataType: string
+		summarizeBy: none
+		sourceColumn: gender
+
+	column occupation
+		dataType: string
+		summarizeBy: none
+		sourceColumn: occupation
+
+	column institution_group
+		dataType: string
+		summarizeBy: none
+		sourceColumn: institution_group
+
+	column blood_group
+		dataType: string
+		summarizeBy: none
+		sourceColumn: blood_group
+
+	column abo
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: abo
+
+	column rh
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: rh
+
+	column genotype
+		dataType: string
+		summarizeBy: none
+		sourceColumn: genotype
+
+	column prior_donations
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: prior_donations
+
+	column prior_bucket
+		dataType: string
+		summarizeBy: none
+		sourceColumn: prior_bucket
+		sortByColumn: 'History Order'
+
+	column first_time
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: first_time
+
+	column is_returning_to_ohls
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: is_returning_to_ohls
+
+	column has_later_drive
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: has_later_drive
+
+	column came_back_later
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: came_back_later
+
+	column donated
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: donated
+
+	column deferral_reason
+		dataType: string
+		summarizeBy: none
+		sourceColumn: deferral_reason
+
+	column deferral_reason_text
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: deferral_reason_text
+
+	column will_return
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: will_return
+
+	column wants_reminder
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: wants_reminder
+
+	column experience_text
+		dataType: string
+		summarizeBy: none
+		sourceColumn: experience_text
+
+	column experience_sentiment
+		dataType: string
+		summarizeBy: none
+		sourceColumn: experience_sentiment
+
+	column 'Age Order'
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Age Order
+
+	column 'History Order'
+		dataType: int64
+		isHidden
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: History Order
+
+	partition Responses = m
+		mode: import
+		source = ```
+				let
+				    Source = Csv.Document(
+				        Web.Contents(BaseUrl, [RelativePath = "fact_responses.csv"]),
+				        [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]
+				    ),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    // empty cells and R's NA arrive as text and would fail the type change: make them null
+				    #"Blanks to Null" = Table.TransformColumns(#"Promoted Headers", {}, each if _ = "" or _ = "NA" then null else _),
+				    // True/TRUE/true all become true: pandas writes True, R writes TRUE
+				    #"Booleans" = Table.TransformColumns(#"Blanks to Null", {{"underage", each if _ = null then null else Text.Lower(_)}, {"first_time", each if _ = null then null else Text.Lower(_)}, {"is_returning_to_ohls", each if _ = null then null else Text.Lower(_)}, {"has_later_drive", each if _ = null then null else Text.Lower(_)}, {"came_back_later", each if _ = null then null else Text.Lower(_)}, {"donated", each if _ = null then null else Text.Lower(_)}, {"will_return", each if _ = null then null else Text.Lower(_)}, {"wants_reminder", each if _ = null then null else Text.Lower(_)}}),
+				    #"Changed Types" = Table.TransformColumnTypes(
+				        #"Booleans",
+				        {
+				            {"response_id", type text},
+				            {"donor_id", type text},
+				            {"drive_id", type text},
+				            {"drive_name", type text},
+				            {"drive_date", type datetime},
+				            {"submitted_at", type datetime},
+				            {"submit_hour", Int64.Type},
+				            {"age", type number},
+				            {"age_band", type text},
+				            {"underage", type logical},
+				            {"gender", type text},
+				            {"occupation", type text},
+				            {"institution_group", type text},
+				            {"blood_group", type text},
+				            {"abo", type text},
+				            {"rh", type text},
+				            {"genotype", type text},
+				            {"prior_donations", Int64.Type},
+				            {"prior_bucket", type text},
+				            {"first_time", type logical},
+				            {"is_returning_to_ohls", type logical},
+				            {"has_later_drive", type logical},
+				            {"came_back_later", type logical},
+				            {"donated", type logical},
+				            {"deferral_reason", type text},
+				            {"deferral_reason_text", type text},
+				            {"will_return", type logical},
+				            {"wants_reminder", type logical},
+				            {"experience_text", type text},
+				            {"experience_sentiment", type text}
+				        },
+				        "en-US"
+				    ),
+				    #"Filtered Rows" = #"Changed Types",
+				    #"Age Order" = Table.AddColumn(#"Filtered Rows", "Age Order", each
+				        List.PositionOf({"Under 18", "18-19", "20-21", "22-24", "25+", "Unknown"}, [age_band]), Int64.Type),
+				    #"History Order" = Table.AddColumn(#"Age Order", "History Order", each
+				        List.PositionOf({"First-timer", "1 prior", "2 prior", "3-4 prior", "5+ prior"}, [prior_bucket]), Int64.Type),
+				    Result = #"History Order"
+				in
+				    Result
+				```
+
